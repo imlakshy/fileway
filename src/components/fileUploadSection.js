@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image';
 
 const FileUploadSection = ({ selectedFiles, setSelectedFiles, fileType }) => {
 
@@ -100,6 +101,7 @@ const FileUploadSection = ({ selectedFiles, setSelectedFiles, fileType }) => {
                         {selectedFiles.map((file, index) => (
                             <div key={index} className='grid grid-cols-11 p-4 items-center border-b border-gray-800 overflow-y-auto'>
                                 <div className='col-span-3'>
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img src={file.preview} alt="" className="w-[120px] h-[68px]" />
                                 </div>
 

@@ -47,7 +47,7 @@ export default function Home() {
             className={`mt-8 font-bold transition-all duration-500 ${active !== "" ? "text-base sm:text-lg md:text-xl" : "text-4xl sm:text-5xl"
               }`}
           >
-            Workin' W:
+            Workin&apos; W:
           </span>
 
           <div
