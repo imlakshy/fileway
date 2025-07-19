@@ -94,7 +94,6 @@ export default function Home() {
         <div className="mt-8">
           {showComponent === 'PDF' && <PDFSec />}
           {showComponent === 'Image' && <ImageSec />}
-          {showComponent === 'Text' && <TextSec />}
         </div>
       </div>
 
