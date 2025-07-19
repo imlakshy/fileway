@@ -1,9 +1,11 @@
 "use client"
-import { useEffect, useState } from "react";
-import ImageSec from "@/components/image/image";
+import { useEffect, useState, useRef } from "react";
 import NavBar from "@/components/navBar";
-import PDFSec from "@/components/pdf/pdf";
-import MenuIcon from "@/components/icons/MusicIcon";
+import dynamic from 'next/dynamic';
+
+// Lazy load each section
+const PDFSec = dynamic(() => import('@/components/pdf/pdf'));
+const ImageSec = dynamic(() => import('@/components/image/image'));
 
 export default function Home() {
 
@@ -32,10 +34,31 @@ export default function Home() {
     },
   ];
 
+  const [showComponent, setShowComponent] = useState('');
+  const firstLoadRef = useRef(true); // Tracks first load
+
+  useEffect(() => {
+    if (active === '') return;
+
+    if (firstLoadRef.current) {
+      // First time: debounce
+      const timer = setTimeout(() => {
+        setShowComponent(active);
+        firstLoadRef.current = false; // Mark first load complete
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    } else {
+      // All later times: show instantly
+      setShowComponent(active);
+    }
+  }, [active]);
+
   return (
     <div className="flex flex-col justify-center items-center h-screen">
+      {/* Navbar */}
       <div className={`bg-[#121212] flex w-full justify-center items-center transition-all border-b-2 border-amber-900 duration-1000  ${active !== "" ? "h-16" : "h-[50vh]"
-                }`}>
+        }`}>
         <NavBar active={active} />
       </div>
 
@@ -59,7 +82,7 @@ export default function Home() {
                 key={btn.title}
                 className={`py-2 px-5 sm:px-6 md:px-16 m-2 text-sm sm:text-base md:text-lg lg:text-xl rounded-full cursor-pointer border-2 border-transparent transition-all duration-300 text-gray-400 hover:border-amber-800 hover:text-white ${active === btn.title && "bg-amber-900 text-white"
                   }`}
-                onClick={() => setActive(btn.title)}
+                onClick={() => { setActive(btn.title) }}
               >
                 {btn.title}
               </div>
@@ -67,13 +90,12 @@ export default function Home() {
           </div>
         </div>
 
-
-        {active == "Image" && (
-          <ImageSec />
-        )}
-        {active == "PDF" && (
-          <PDFSec />
-        )}
+        {/* Conditional rendering after debounce */}
+        <div className="mt-8">
+          {showComponent === 'PDF' && <PDFSec />}
+          {showComponent === 'Image' && <ImageSec />}
+          {showComponent === 'Text' && <TextSec />}
+        </div>
       </div>
 
     </div>

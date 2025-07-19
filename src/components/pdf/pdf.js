@@ -209,7 +209,7 @@ const PDFSec = () => {
 
 
     return (
-        <div className='flex gap-4'>
+        <div className='flex gap-4 h-full w-full'>
             <FileUploadSection selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} fileType={"application"} />
 
             <div className='w-[500px] h-[500px] flex flex-col gap-4 '>
