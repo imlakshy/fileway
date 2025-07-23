@@ -209,10 +209,10 @@ const PDFSec = () => {
 
 
     return (
-        <div className='flex gap-4 h-full w-full'>
-            <FileUploadSection selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} fileType={"application"} />
+        <div className='flex flex-col md:flex-row gap-4 h-full w-full'>
+            <FileUploadSection selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} fileType={".pdf,application/pdf"} />
 
-            <div className='w-[500px] h-[500px] flex flex-col gap-4 '>
+            <div className='min-w-[350px] w-full max-w-[500px] h-[500px] flex flex-col gap-4 '>
                 <div className={fancyButtonClass} onClick={mergerPdf}>
                     Merge PDF
                 </div>

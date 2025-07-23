@@ -34,7 +34,7 @@ const FileUploadSection = ({ selectedFiles, setSelectedFiles, fileType }) => {
 
     return (
         <div>
-            <div className="h-[500px] w-[800px] rounded-xl overflow-auto border border-dashed border-gray-600">
+            <div className="h-[500px] w-[350px] sm:w-[90%] md:w-[600px] lg:w-[700px] xl:w-[800px] mx-auto rounded-xl overflow-auto border border-dashed border-gray-600">
                 {selectedFiles == 0 && (
                     <div className='h-full'
                         onClick={() => document.getElementById('fileInput').click()}>
