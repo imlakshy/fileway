@@ -57,24 +57,23 @@ export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       {/* Navbar */}
-      <div className={`bg-[#121212] flex w-full justify-center items-center transition-all border-b-2 border-amber-900 duration-1000  ${active !== "" ? "h-16" : "h-[50vh]"
+      <div className={`bg-[#121212] flex w-full justify-center items-center transition-all border-b-2 border-amber-900 duration-1000  ${active !== "" ? "h-20" : "h-[50vh]"
         }`}>
         <NavBar active={active} />
       </div>
 
-      <div className={`flex flex-1 flex-col`}>
+      <div className={`relative flex flex-1 flex-col w-full items-center  `}>
 
         {/* Working with tab */}
-        <div className="flex justify-center items-center flex-col gap-8">
           <span
-            className={`mt-8 font-bold transition-all duration-500 ${active !== "" ? "text-base sm:text-lg md:text-xl" : "text-4xl sm:text-5xl"
+            className={`mx-auto my-8 font-bold transition-all duration-1000 ${active !== "" ? "text-base sm:text-lg md:text-xl opacity-0" : "text-4xl sm:text-5xl"
               }`}
           >
             Workin&apos; W:
           </span>
 
           <div
-            className={`flex flex-wrap justify-center border-2 border-amber-900 rounded-full transition-transform duration-1000 ${active !== "" ? "scale-90" : "scale-100"
+            className={`absolute flex flex-wrap justify-center border-2 border-amber-900 rounded-full transition-transform duration-1000 ${active !== "" ? "scale-90 translate-y-4" : "scale-100 translate-y-32"
               }`}
           >
             {buttons.map((btn) => (
@@ -88,7 +87,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
+      
 
         {/* Conditional rendering after debounce */}
         <div className="mt-8">
