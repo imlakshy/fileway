@@ -57,10 +57,10 @@ export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       {/* Navbar */}
-      <div className={`bg-[#121212] flex w-full justify-center items-center transition-all border-b-2 border-amber-900 duration-1000  ${active !== "" ? "h-20" : "h-[50vh]"
+      {/* <div className={`bg-[#121212] flex w-full justify-center items-center transition-all border-b-2 border-amber-900 duration-1000  ${active !== "" ? "h-20" : "h-[50vh]"
         }`}>
         <NavBar active={active} />
-      </div>
+      </div> */}
 
       <div className={`relative flex flex-1 flex-col w-full items-center  `}>
 

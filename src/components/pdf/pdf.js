@@ -3,6 +3,7 @@ import FileUploadSection from '../fileUploadSection'
 import uploadToSupabase from '@/lib/uploadToSupabase';
 import { deleteFromSupabase } from '@/lib/deleteFromSupabase';
 import axios from "axios";
+import { motion, AnimatePresence } from 'framer-motion';
 
 
 const PDFSec = () => {
@@ -268,6 +269,16 @@ const PDFSec = () => {
         },
     ];
 
+    const [selectedTool, setSelectedTool] = useState(null);
+
+    const handleToolClick = (tool) => {
+        setSelectedTool(tool);
+    };
+
+    const handleReset = () => {
+        setSelectedTool(null);
+    };
+
 
     return (
         <div className='flex gap-[20px] h-full w-[370px] md:w-[720px] justify-center items-center flex-wrap col-span-2'>
@@ -298,24 +309,63 @@ const PDFSec = () => {
                 </div>
             </div> */}
 
-            <div className="flex flex-wrap gap-[20px] w-[370px] md:w-[720px] justify-center">
-                {pdfTools.map((tool) => (
-                    <div
-                        key={tool.name}
-                        className="w-[350px] cursor-pointer bg-[#18181b] hover:bg-black hover:border-2 hover:border-amber-900 border-2 border-transparent rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-4 p-5"
-                    >
-                        <img
-                            src={tool.icon}
-                            alt={tool.name + " icon"}
-                            className="w-12 h-12 bg-[#232326] rounded-xl p-2"
-                        />
-                        <div>
-                            <h2 className="text-white text-lg font-semibold">{tool.name}</h2>
-                            <p className="text-gray-400 text-sm">{tool.description}</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            <AnimatePresence mode="wait">
+
+                {!selectedTool ? (
+                    <motion.div
+                        key="buttons"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.4 }}
+                        className="flex flex-wrap gap-[20px] w-[370px] md:w-[720px] justify-center">
+                        {pdfTools.map((tool) => (
+                            <div
+                                key={tool.name}
+                                className="w-[350px] cursor-pointer bg-[#18181b] hover:bg-black hover:border-2 hover:border-amber-900 hover:scale-102 transition-all duration-300 border-2 border-transparent rounded-2xl shadow-lg hover:shadow-xl  flex items-center gap-4 p-5"
+                                onClick={() => handleToolClick(tool.name)}
+                            >
+                                <img
+                                    src={tool.icon}
+                                    alt={tool.name + " icon"}
+                                    className="w-12 h-12 bg-amber-900 rounded-xl p-2"
+                                />
+                                <div>
+                                    <h2 className="text-white text-lg font-semibold">{tool.name}</h2>
+                                    <p className="text-gray-400 text-sm">{tool.description}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </motion.div>)
+                    :
+                    (
+                        <motion.div
+                            key="upload"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.4 }}
+                            className="w-full max-w-md bg-gray-800 p-6 rounded shadow">
+                            <h2 className="text-xl mb-4 capitalize">{selectedTool} Files</h2>
+
+                            <input
+                                type="file"
+                                multiple
+                                className="mb-4 w-full text-gray-200 file:bg-amber-700 file:text-white file:rounded file:px-3 file:py-1"
+                            />
+
+                            <button className="bg-green-600 px-4 py-2 rounded hover:bg-green-500 transition w-full mb-2">
+                                Perform {selectedTool}
+                            </button>
+
+                            <button onClick={handleReset} className="text-sm text-gray-400 hover:text-white underline mt-2">
+                                Go Back
+                            </button>
+                        </motion.div>
+                    )}
+            </AnimatePresence>
+
+
 
         </div>
     )
