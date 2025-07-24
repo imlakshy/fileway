@@ -55,12 +55,9 @@ export default function Home() {
   }, [active]);
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex flex-col justify-center items-center">
       {/* Navbar */}
-      {/* <div className={`bg-[#121212] flex w-full justify-center items-center transition-all border-b-2 border-amber-900 duration-1000  ${active !== "" ? "h-20" : "h-[50vh]"
-        }`}>
-        <NavBar active={active} />
-      </div> */}
+      <NavBar active={active}/>
 
       <div className={`relative flex flex-1 flex-col w-full items-center  `}>
 
@@ -90,7 +87,7 @@ export default function Home() {
       
 
         {/* Conditional rendering after debounce */}
-        <div className="mt-8">
+        <div className="mt-2">
           {showComponent === 'PDF' && <PDFSec />}
           {showComponent === 'Image' && <ImageSec />}
         </div>
