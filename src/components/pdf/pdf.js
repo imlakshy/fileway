@@ -10,7 +10,6 @@ const PDFSec = () => {
 
     const [selectedFiles, setSelectedFiles] = useState([]);
 
-    const fancyButtonClass = "w-full p-2 flex justify-center border-2 text-xl font-s    hover:border-white transition-all duration-300 cursor-pointer rounded-full text-[#bfbfbf] hover:text-white"
 
     const mergerPdf = async () => {
         console.log("Staring...");
@@ -322,13 +321,13 @@ const PDFSec = () => {
                         {pdfTools.map((tool) => (
                             <div
                                 key={tool.name}
-                                className="w-[350px] cursor-pointer bg-[#18181b] hover:bg-black hover:border-2 hover:border-amber-900 hover:scale-102 transition-all duration-300 border-2 border-transparent rounded-2xl shadow-lg hover:shadow-xl  flex items-center gap-4 p-5"
+                                className="w-[350px] cursor-pointer bg-black hover:bg-[#121212] hover:border-2 hover:border-white hover:scale-102 transition-all duration-300 border-2 border-transparent rounded-2xl shadow-lg hover:shadow-xl  flex items-center gap-4 p-5"
                                 onClick={() => handleToolClick(tool.name)}
                             >
                                 <img
                                     src={tool.icon}
                                     alt={tool.name + " icon"}
-                                    className="w-12 h-12 bg-amber-900 rounded-xl p-2"
+                                    className="w-12 h-12 invert  border-black border-2 rounded-full p-2"
                                 />
                                 <div>
                                     <h2 className="text-white text-lg font-semibold">{tool.name}</h2>
@@ -348,12 +347,7 @@ const PDFSec = () => {
                             className="w-full max-w-md bg-gray-800 p-6 rounded shadow">
                             <h2 className="text-xl mb-4 capitalize">{selectedTool} Files</h2>
 
-                            <input
-                                type="file"
-                                multiple
-                                className="mb-4 w-full text-gray-200 file:bg-amber-700 file:text-white file:rounded file:px-3 file:py-1"
-                            />
-
+                            
                             <button className="bg-green-600 px-4 py-2 rounded hover:bg-green-500 transition w-full mb-2">
                                 Perform {selectedTool}
                             </button>
