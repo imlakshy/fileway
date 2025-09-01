@@ -209,62 +209,62 @@ const PDFSec = () => {
         {
             name: "Merge PDF",
             description: "Merges multiple PDFs into one PDF",
-            icon: "https://unpkg.com/lucide-static/icons/merge.svg",
+            icon: "/PdfSec/merge.png",
         },
         {
             name: "Split PDF",
             description: "Splits a PDF into multiple files",
-            icon: "https://unpkg.com/lucide-static/icons/split.svg",
+            icon: "/PdfSec/split.png",
         },
         {
             name: "Unlock PDF",
             description: "Removes password protection from a PDF",
-            icon: "https://unpkg.com/lucide-static@0.436.0/icons/lock-open.svg",
+            icon: "/PdfSec/unlock.png",
         },
         {
             name: "Protect PDF",
             description: "Adds password protection to a PDF",
-            icon: "https://unpkg.com/lucide-static/icons/lock.svg",
+            icon: "/PdfSec/protect.png",
         },
         {
             name: "Dark Mode PDF",
             description: "Converts PDF to dark mode",
-            icon: "https://unpkg.com/lucide-static/icons/moon.svg",
+            icon: "/PdfSec/darkMode.png",
         },
         {
             name: "Compress PDF",
             description: "Reduces PDF file size",
-            icon: "https://unpkg.com/lucide-static@0.436.0/icons/shrink.svg",
+            icon: "/PdfSec/compress.png",
         },
         {
             name: "Organise PDF",
             description: "Rearrange, add, or remove PDF pages",
-            icon: "https://unpkg.com/lucide-static@0.436.0/icons/layout-list.svg",
+            icon: "/PdfSec/organise.png",
         },
         {
             name: "Convert to Image",
             description: "Convert PDF pages to images",
-            icon: "https://unpkg.com/lucide-static/icons/image.svg",
+            icon: "/PdfSec/toImage.png",
         },
         {
             name: "Convert to Excel",
             description: "Convert PDF to Excel spreadsheet",
-            icon: "https://unpkg.com/lucide-static/icons/file-spreadsheet.svg",
+            icon: "/PdfSec/toExcel.png",
         },
         {
             name: "Convert to Word",
             description: "Convert PDF to Word document",
-            icon: "https://unpkg.com/lucide-static@0.436.0/icons/file.svg",
+            icon: "/PdfSec/toWord.png",
         },
         {
             name: "Convert to PPT",
             description: "Convert PDF to PowerPoint presentation",
-            icon: "https://unpkg.com/lucide-static@0.436.0/icons/presentation.svg",
+            icon: "/PdfSec/toPpt.png",
         },
         {
             name: "Convert to Text",
             description: "Extract text from PDF",
-            icon: "https://unpkg.com/lucide-static/icons/file-text.svg",
+            icon: "/PdfSec/split.png",
         },
     ];
 
@@ -281,33 +281,6 @@ const PDFSec = () => {
 
     return (
         <div className='flex gap-[20px] w-[370px] md:w-[720px] justify-center items-center flex-wrap col-span-2'>
-            {/* <FileUploadSection selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} fileType={".pdf,application/pdf"} /> */}
-
-            {/* <div className='min-w-[350px] w-full max-w-[500px] h-[500px] flex flex-col gap-4 '>
-                <div className={fancyButtonClass} onClick={mergerPdf}>
-                    Merge PDF
-                </div>
-
-                <div className={fancyButtonClass} onClick={unlockPdf}>
-                    Unlock PDF
-                </div>
-                <div className={fancyButtonClass} onClick={splitPdf}>
-                    Split PDF
-                </div>
-                <div className={fancyButtonClass} onClick={darkModePdf}>
-                    Dark Mode PDF
-                </div>
-                <div className={fancyButtonClass} onClick={compressPdf}>
-                    Compress PDF
-                </div>
-                <div className={fancyButtonClass} onClick={protectPdf}>
-                    Protect PDF
-                </div>
-                <div className={`${fancyButtonClass} flex flex-col items-center`} onClick={protectPdf}>
-                    Organise PDF  <p className='text-xs text-gray-400 pt-1'>Add, Delete, Extract Page</p>
-                </div>
-            </div> */}
-
             <AnimatePresence mode="wait">
 
                 {!selectedTool ? (
@@ -327,7 +300,7 @@ const PDFSec = () => {
                                 <img
                                     src={tool.icon}
                                     alt={tool.name + " icon"}
-                                    className="w-12 h-12 invert  border-black border-2 rounded-full p-2"
+                                    className='aspect-square w-12'
                                 />
                                 <div>
                                     <h2 className="text-white text-lg font-semibold">{tool.name}</h2>
@@ -344,23 +317,24 @@ const PDFSec = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.4 }}
-                            className="w-full max-w-md bg-gray-800 p-6 rounded shadow">
-                            <h2 className="text-xl mb-4 capitalize">{selectedTool} Files</h2>
+                            className="w-full max-w-md p-6 rounded shadow">
+                                <img src="/icons/back.png" className='w-5 h-5 aspect-square cursor-pointer' onClick={handleReset} alt="GoBack" />
+                               
+                                <h2 className="text-2xl capitalize my-4">{selectedTool} Files</h2>
 
+                                <div className='min-h-[250px]  rounded-xl overflow-auto border border-dashed border-gray-600 mb-8 flex items-center justify-center'>
+                                    FileUploadSection
+                                </div>
                             
+
                             <button className="bg-green-600 px-4 py-2 rounded hover:bg-green-500 transition w-full mb-2">
                                 Perform {selectedTool}
                             </button>
 
-                            <button onClick={handleReset} className="text-sm text-gray-400 hover:text-white underline mt-2">
-                                Go Back
-                            </button>
+
                         </motion.div>
                     )}
             </AnimatePresence>
-
-
-
         </div>
     )
 }
