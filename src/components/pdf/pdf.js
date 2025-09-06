@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import FileUploadSection from '../fileUploadSection'
+import PdfUpload from '../pdfFileUpload';
 import uploadToSupabase from '@/lib/uploadToSupabase';
 import { deleteFromSupabase } from '@/lib/deleteFromSupabase';
 import axios from "axios";
@@ -278,6 +278,20 @@ const PDFSec = () => {
         setSelectedTool(null);
     };
 
+    const handleFiles = (files) => {
+        const fileArray = Array.from(files);
+        const fileData = fileArray.map((f) => ({
+            name: f.name,
+            size: (f.size / 1024).toFixed(2) + ' KB',
+            preview: URL.createObjectURL(f),
+            file: f,
+        }));
+
+        setSelectedFiles((prev) => [...prev, ...fileData]);
+    };
+
+    
+
 
     return (
         <div className='flex gap-[20px] w-[370px] md:w-[720px] justify-center items-center flex-wrap col-span-2'>
@@ -318,16 +332,16 @@ const PDFSec = () => {
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.4 }}
                             className="w-full max-w-md p-6 rounded shadow">
-                                <img src="/icons/back.png" className='w-5 h-5 aspect-square cursor-pointer' onClick={handleReset} alt="GoBack" />
-                               
-                                <h2 className="text-2xl capitalize my-4">{selectedTool} Files</h2>
+                            <img src="/icons/back.png" className='w-5 h-5 aspect-square cursor-pointer' onClick={handleReset} alt="GoBack" />
 
-                                <div className='min-h-[250px]  rounded-xl overflow-auto border border-dashed border-gray-600 mb-8 flex items-center justify-center'>
-                                    FileUploadSection
-                                </div>
+                            <h2 className="text-2xl capitalize my-4">{selectedTool} Files</h2>
+
                             
+                            
+                            <PdfUpload/>
 
-                            <button className="bg-green-600 px-4 py-2 rounded hover:bg-green-500 transition w-full mb-2">
+
+                            <button className="bg-amber-900 px-4 py-2 hover:bg-amber-700 transition w-full my-2">
                                 Perform {selectedTool}
                             </button>
 
