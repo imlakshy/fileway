@@ -1,5 +1,5 @@
 // components/WaveformPlayer.js
-'use client'; // if using Next.js 13+ app directory
+"use client"; // if using Next.js 13+ app directory
 
 import { useEffect, useRef } from 'react';
 import WaveSurfer from 'wavesurfer.js';

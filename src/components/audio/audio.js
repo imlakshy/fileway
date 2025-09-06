@@ -1,5 +1,5 @@
 // app/page.js or pages/index.js
-'use client'; // for Next.js 13 app dir
+"use client"; // for Next.js 13 app dir
 
 import { useState } from 'react';
 import WaveformPlayer from './waveform';
