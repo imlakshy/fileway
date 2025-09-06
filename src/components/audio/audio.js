@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import WaveformPlayer from './waveform';
 
-export default function audioSec() {
+export default function AudioSec() {
   const [region, setRegion] = useState({ start: 0, end: 0 });
 
   const handleRegionChange = (data) => {
