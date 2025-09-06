@@ -43,8 +43,8 @@ const PdfUpload = () => {
                     />
                     <div className="h-full w-full flex flex-col items-center justify-center">
                         <svg
-                            width="256px"
-                            height="120px"
+                            width="206px"
+                            height="100px"
                             viewBox="0 0 24.00 24.00"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +72,7 @@ const PdfUpload = () => {
                     {/* Delete button - hidden until hover */}
                     <button
                         onClick={() => handleDelete(file.name)}
-                        className="absolute top-2 left-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition cursor-pointer"
+                        className="absolute top-2 left-2 p-1 bg-red-500 text-white rounded-full transition cursor-pointer"
                     >
                         <X size={14} />
                     </button>
@@ -94,7 +94,7 @@ const PdfUpload = () => {
 
         {selectedFiles.length > 0 && (<div
                 onClick={() => document.getElementById('fileInput').click()}
-                className='flex justify-center items-center border-2 border-amber-900 hover:bg-amber-950 hover:border-amber-950 mt-4'>
+                className='flex justify-center items-center border-2 border-amber-900 hover:bg-amber-950 hover:border-amber-950 mt-4 rounded-sm cursor-pointer'>
                 <Plus/>
                 <span className='px-2 py-2'>Add More</span>
                 <input

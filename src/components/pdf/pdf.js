@@ -341,7 +341,7 @@ const PDFSec = () => {
                             <PdfUpload/>
 
 
-                            <button className="bg-amber-900 px-4 py-2 hover:bg-amber-700 transition w-full my-2">
+                            <button className="bg-amber-900 px-4 py-2 hover:bg-amber-700 transition w-full my-2 rounded cursor-pointer">
                                 Perform {selectedTool}
                             </button>
 
