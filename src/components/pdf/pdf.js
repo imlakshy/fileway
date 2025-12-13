@@ -365,7 +365,7 @@ const PDFSec = () => {
                 <div
                     className=" w-screen flex justify-center">
                     <div
-                        className=" w-screen max-w-[100vw] max-h-[calc(100vh-300px)] overflow-y-auto px-2 scrollbar-none">
+                        className=" w-screen max-w-[100vw] max-h-[calc(100vh-200px)] overflow-y-auto px-2 scrollbar-none">
                         <div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
