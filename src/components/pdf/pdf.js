@@ -289,6 +289,223 @@ const PDFSec = () => {
         }
     }
 
+    async function convertToImageFunction(files) {
+        if (files.length === 0) {
+            toast.error("Please select atleast a PDF");
+            return;
+        } else {
+            setStatus("uploading");
+            const urls = await uploadToSupabase({ selectedFiles: files })
+
+            setStatus("processing");
+            const response = await axios.post("https://fileway-backend.onrender.com/pdf-to-images", {
+                pdf_urls: urls,
+            }, {
+                responseType: "blob",
+            });
+            setStatus("downloading");
+
+            // Get content type from response headers
+            const contentType = response.headers["content-type"];
+
+            // Decide file type & name
+            let fileName = "download";
+            let mimeType = contentType;
+
+            if (contentType.includes("application/zip")) {
+                fileName = "Images.zip";
+            } else if (contentType.includes("image/jpeg")) {
+                fileName = "Image.jpg";
+            } else if (contentType.includes("image/png")) {
+                fileName = "Image.png";
+            }
+
+            // Create blob
+            const blob = new Blob([response.data], { type: mimeType });
+
+            // Download
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+
+
+            // CLEANUP: Call delete function after download
+            console.log("Cleaning up uploaded files...");
+            await deleteFromSupabase({ urls });
+            setStatus("done");
+
+            setTimeout(() => {
+                setStatus("idle");
+                setSelectedFiles([]);
+            }, 2000);
+        }
+    }
+
+    async function convertToExcelFunction(files) {
+        if (files.length === 0) {
+            toast.error("Please select atleast a PDF");
+            return;
+        } else {
+            setStatus("uploading");
+            const urls = await uploadToSupabase({ selectedFiles: files })
+
+            setStatus("processing");
+            const response = await axios.post("https://fileway-backend.onrender.com/pdf-to-excel", {
+                pdf_urls: urls,
+            }, {
+                responseType: "blob",
+            });
+
+            // Create a blob from response
+            const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+
+            // Create temporary download link
+            setStatus("downloading");
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Exceled.xlsx";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+
+            // CLEANUP: Call delete function after download
+            console.log("Cleaning up uploaded files...");
+            await deleteFromSupabase({ urls });
+            setStatus("done");
+
+            setTimeout(() => {
+                setStatus("idle");
+                setSelectedFiles([]);
+            }, 2000);
+        }
+    }
+
+    async function convertToWordFunction(files) {
+        if (files.length === 0) {
+            toast.error("Please select atleast a PDF");
+            return;
+        } else {
+            setStatus("uploading");
+            const urls = await uploadToSupabase({ selectedFiles: files })
+
+            setStatus("processing");
+            const response = await axios.post("https://fileway-backend.onrender.com/pdf-to-word", {
+                pdf_urls: urls,
+            }, {
+                responseType: "blob",
+            });
+
+            // Create a blob from response
+            const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+
+            // Create temporary download link
+            setStatus("downloading");
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Word.docx";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+
+            // CLEANUP: Call delete function after download
+            console.log("Cleaning up uploaded files...");
+            await deleteFromSupabase({ urls });
+            setStatus("done");
+
+            setTimeout(() => {
+                setStatus("idle");
+                setSelectedFiles([]);
+            }, 2000);
+        }
+    }
+
+    async function convertToPptFunction(files) {
+        if (files.length === 0) {
+            toast.error("Please select atleast a PDF");
+            return;
+        } else {
+            setStatus("uploading");
+            const urls = await uploadToSupabase({ selectedFiles: files })
+
+            setStatus("processing");
+            const response = await axios.post("https://fileway-backend.onrender.com/pdf-to-powerpoint", {
+                pdf_urls: urls,
+            }, {
+                responseType: "blob",
+            });
+
+            // Create a blob from response
+            const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
+
+            // Create temporary download link
+            setStatus("downloading");
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Slide.pptx";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+
+            // CLEANUP: Call delete function after download
+            console.log("Cleaning up uploaded files...");
+            await deleteFromSupabase({ urls });
+            setStatus("done");
+
+            setTimeout(() => {
+                setStatus("idle");
+                setSelectedFiles([]);
+            }, 2000);
+        }
+    }
+
+    async function convertToTextFunction(files) {
+        if (files.length === 0) {
+            toast.error("Please select atleast a PDF");
+            return;
+        } else {
+            setStatus("uploading");
+            const urls = await uploadToSupabase({ selectedFiles: files })
+
+            setStatus("processing");
+            const response = await axios.post("https://fileway-backend.onrender.com/pdf-to-text", {
+                pdf_urls: urls,
+            }, {
+                responseType: "blob",
+            });
+
+            // Create a blob from response
+            const blob = new Blob([response.data], { type: "text/plain" });
+
+            // Create temporary download link
+            setStatus("downloading");
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Text.txt";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+
+            // CLEANUP: Call delete function after download
+            console.log("Cleaning up uploaded files...");
+            await deleteFromSupabase({ urls });
+            setStatus("done");
+
+            setTimeout(() => {
+                setStatus("idle");
+                setSelectedFiles([]);
+            }, 2000);
+        }
+    }
+
     const pdfTools = [
         {
             name: "Merge PDF",
@@ -335,26 +552,31 @@ const PDFSec = () => {
             name: "Convert to Image",
             description: "Convert PDF pages to images",
             icon: "/PdfSec/toImage.png",
+            operation: convertToImageFunction
         },
         {
             name: "Convert to Excel",
             description: "Convert PDF to Excel spreadsheet",
             icon: "/PdfSec/toExcel.png",
+            operation: convertToExcelFunction
         },
         {
             name: "Convert to Word",
             description: "Convert PDF to Word document",
             icon: "/PdfSec/toWord.png",
+            operation: convertToWordFunction
         },
         {
             name: "Convert to PPT",
             description: "Convert PDF to PowerPoint presentation",
             icon: "/PdfSec/toPpt.png",
+            operation: convertToPptFunction
         },
         {
             name: "Convert to Text",
             description: "Extract text from PDF",
             icon: "/PdfSec/split.png",
+            operation: convertToTextFunction
         },
     ];
 
