@@ -20,6 +20,24 @@ const PDFSec = () => {
         setSelectedTool(null);
     };
 
+    const progressMap = {
+        idle: "0%",
+        uploading: "25%",
+        processing: "55%",
+        downloading: "85%",
+        done: "100%",
+    };
+
+    const glowMap = {
+        idle: "opacity-0",
+        uploading: "opacity-60",
+        processing: "opacity-100",
+        downloading: "opacity-80",
+        done: "opacity-100",
+    };
+
+
+
     async function mergePdfFunction(files) {
         if (files.length < 2) {
             toast.error("Please select at least 2 PDF");
@@ -66,40 +84,51 @@ const PDFSec = () => {
             toast.error("Please select at least a PDF");
             return;
         } else {
-            const startpg = window.prompt("Start Page:");
-            const endpg = window.prompt("End Page:");
+            try {
+                const startpg = window.prompt("Start Page:");
+                const endpg = window.prompt("End Page:");
 
-            setStatus("uploading");
+                setStatus("uploading");
 
-            const urls = await uploadToSupabase({ selectedFiles: files })
-            setStatus("processing");
+                const urls = await uploadToSupabase({ selectedFiles: files })
+                setStatus("processing");
 
-            const response = await axios.post("https://fileway-backend.onrender.com/split-pdf", {
-                pdf_urls: urls,
-                start: startpg,
-                end: endpg,
-            }, {
-                responseType: "blob",
-            });
+                const response = await axios.post("https://fileway-backend.onrender.com/split-pdf", {
+                    pdf_urls: urls,
+                    start: startpg,
+                    end: endpg,
+                }, {
+                    responseType: "blob",
+                });
 
-            // Create a blob from response
-            const blob = new Blob([response.data], { type: "application/pdf" });
-            setStatus("downloading");
+                // Create a blob from response
+                const blob = new Blob([response.data], { type: "application/pdf" });
+                setStatus("downloading");
 
-            // Create temporary download link
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "Splited.pdf";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setStatus("done");
+                // Create temporary download link
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "Splited.pdf";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                setStatus("done");
 
-            setTimeout(() => {
+                setTimeout(() => {
+                    setStatus("idle");
+                    setSelectedFiles([]);
+                }, 2000);
+
+            }
+            catch (error) {
+                if (error.response) {
+                    toast.error(
+                        error.response.data?.message ||
+                        "Failed to split PDF"
+                    );
+                }
                 setStatus("idle");
-                setSelectedFiles([]);
-            }, 2000);
-
+            }
         }
 
     }
@@ -506,6 +535,10 @@ const PDFSec = () => {
         }
     }
 
+    async function organisePdfFunction() {
+        toast.info("Coming Soon!");
+    }
+
     const pdfTools = [
         {
             name: "Merge PDF",
@@ -547,6 +580,7 @@ const PDFSec = () => {
             name: "Organise PDF",
             description: "Rearrange, add, or remove PDF pages",
             icon: "/PdfSec/organise.png",
+            operation: organisePdfFunction
         },
         {
             name: "Convert to Image",
@@ -634,7 +668,6 @@ const PDFSec = () => {
                     </div>
 
 
-
                     <PdfUpload
                         selectedFiles={selectedFiles}
                         setSelectedFiles={setSelectedFiles}
@@ -645,32 +678,64 @@ const PDFSec = () => {
                     <button
                         onClick={() => selectedTool.operation(selectedFiles)}
                         disabled={status !== "idle"}
-                        className={` border-2 border-amber-900 px-4 py-3 w-full cursor-pointer flex items-center justify-center gap-3 transition-all duration-500 ease-in-out rounded-full
-                            ${status === "idle" ? " hover:bg-amber-900" : "rounded-full bg-amber-900"}
-                            ${status !== "idle" && "pointer-events-none"}`}>
-                        {/* Loader */}
-                        {status !== "idle" && status !== "done" && (
-                            <span
-                                className=" w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        )}
+                        className={` relative w-full rounded-full p-[2px] transition-all duration-500 group ${status === "idle" && "hover:scale-[1.015]"}`}>
+                        {/* 🌈 Glow Ring (subtle pulse, amber-aware) */}
+                        <div
+                            className={`
+      absolute inset-0
+      rounded-full
+      blur-lg
+      transition-all duration-700
+      ${glowMap[status]}
+      ${status === "done"
+                                    ? "bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-400"
+                                    : "bg-gradient-to-r from-amber-700 via-amber-500 to-amber-700"
+                                }
+      ${status === "processing" && "animate-[pulse_2.5s_ease-in-out_infinite]"}
+    `}
+                        />
 
-                        {/* Done Tick */}
-                        {status === "done" && (
-                            <span
-                                className=" text-green-600 text-lg animate-[pop_0.7s_ease-out]">
-                                ✓
+                        {/* 🔘 Actual Button */}
+                        <div
+                            className={`
+      relative z-10
+      flex items-center justify-center gap-3
+      px-4 py-3
+      rounded-full
+      text-white
+      border border-white/10
+      bg-gradient-to-b from-[#0f0f0f] to-[#050505]
+      backdrop-blur-sm
+      transition-all duration-300
+      group-hover:border-amber-900 hover:border-2
+      ${status !== "idle" && "pointer-events-none"}
+    `}
+                        >
+                            {/* Loader */}
+                            {status !== "idle" && status !== "done" && (
+                                <span className="w-4 h-4 border-2 border-white/80 border-t-transparent rounded-full animate-spin" />
+                            )}
+
+                            {/* Done Tick */}
+                            {status === "done" && (
+                                <span className="text-emerald-400 text-lg animate-[pop_0.5s_ease-out]">
+                                    ✓
+                                </span>
+                            )}
+
+                            {/* Status Text */}
+                            <span className="font-medium tracking-wide text-white/90">
+                                {status === "idle" && selectedTool.name}
+                                {status === "uploading" && "Uploading…"}
+                                {status === "processing" && "Processing…"}
+                                {status === "downloading" && "Downloading…"}
+                                {status === "done" && "Done"}
                             </span>
-                        )}
-
-                        {/* Status Text */}
-                        <span className="transition-opacity duration-700">
-                            {status === "idle" && selectedTool.name}
-                            {status === "uploading" && "Uploading…"}
-                            {status === "processing" && "Processing…"}
-                            {status === "downloading" && "Downloading…"}
-                            {status === "done" && "Done"}
-                        </span>
+                        </div>
                     </button>
+
+
+
 
                 </div>
             )}
