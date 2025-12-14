@@ -80,8 +80,8 @@ const PdfUpload = ({ selectedFiles, setSelectedFiles, status }) => {
                                     strokeLinejoin="round"
                                 />
                             </svg>
-                            <p className="text-lg mt-6">Drag & Drop files here</p>
-                            <p className="text-sm text-gray-500">or click to browse</p>
+                            <p className="text-sm sm:text-base md:text-lg lg:text-xl mt-6">Drag & Drop files here</p>
+                            <p className="text-xs md:text-sm text-gray-500">or click to browse</p>
                         </div>
 
                     </div>)}

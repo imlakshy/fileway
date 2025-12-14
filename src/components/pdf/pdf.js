@@ -602,7 +602,7 @@ const PDFSec = () => {
                                     <img
                                         src={tool.icon}
                                         alt={`${tool.name} icon`}
-                                        className="aspect-square w-12" />
+                                        className="aspect-square w-10 md:w-12" />
                                     <div>
                                         <h2 className="text-white text-sm sm:text-base md:text-lg lg:text-xl font-semibold">
                                             {tool.name}
@@ -630,7 +630,7 @@ const PDFSec = () => {
                     <div className='flex flex-row justify-start items-center gap-4'>
                         <img src="/icons/back.png" className='w-5 h-5 aspect-square cursor-pointer' onClick={() => { handleReset(); setSelectedFiles([]) }} alt="GoBack" />
 
-                        <h2 className="text-2xl capitalize py-4">{selectedTool.name} Files</h2>
+                        <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl capitalize py-4">{selectedTool.name} Files</h2>
                     </div>
 
 
