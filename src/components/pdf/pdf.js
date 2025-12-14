@@ -368,7 +368,7 @@ const PDFSec = () => {
             setStatus("downloading");
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "Exceled.xlsx";
+            link.download = "Sheet.xlsx";
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -408,7 +408,7 @@ const PDFSec = () => {
             setStatus("downloading");
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "Word.docx";
+            link.download = "Document.docx";
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -604,10 +604,10 @@ const PDFSec = () => {
                                         alt={`${tool.name} icon`}
                                         className="aspect-square w-12" />
                                     <div>
-                                        <h2 className="text-white text-lg font-semibold">
+                                        <h2 className="text-white text-sm sm:text-base md:text-lg lg:text-xl font-semibold">
                                             {tool.name}
                                         </h2>
-                                        <p className="text-gray-400 text-sm">
+                                        <p className="text-gray-400 text-xs md:text-sm">
                                             {tool.description}
                                         </p>
                                     </div>
