@@ -1,7 +1,7 @@
 import React from 'react'
 import { X, Plus } from "lucide-react";
 
-const PdfUpload = ({ selectedFiles, setSelectedFiles, status }) => {
+const ImgUpload = ({ selectedFiles, setSelectedFiles }) => {
 
     const handleFiles = (files) => {
         const fileArray = Array.from(files);
@@ -24,10 +24,9 @@ const PdfUpload = ({ selectedFiles, setSelectedFiles, status }) => {
 
 
     return (
-        <div className={`transition-all duration-300 pb-4
-        ${status !== "idle" ? "opacity-20 pointer-events-none" : ""}`}>
+        <div className={`transition-all duration-300 flex flex-col-reverse xl:flex-col`}>
 
-            {selectedFiles.length > 0 && (<div className='flex flex-row-reverse gap-2 pb-2'>
+            {selectedFiles.length > 0 && (<div className='flex flex-row-reverse gap-2 pt-2 md:pb-2'>
                 <div
                     className="group h-8 w-8 hover:w-24 bg-amber-900 rounded-full flex items-center gap-1.5 px-2 cursor-pointer shadow-sm overflow-hidden transition-all duration-300 ease-in-out  hover:bg-amber-900" onClick={() => setSelectedFiles([])}>
 
@@ -46,17 +45,17 @@ const PdfUpload = ({ selectedFiles, setSelectedFiles, status }) => {
                         Add More
                     </span>
 
-                    <input type="file" accept="application/pdf" multiple className="hidden" id="fileInput" onChange={handleFileChange} />
+                    <input type="file" accept="image/*" multiple className="hidden" id="fileInput" onChange={handleFileChange} />
                 </div>
             </div>)}
 
-            <div className='relative min-h-[320px] max-h-[370px] rounded-xl overflow-y-auto border border-dashed border-gray-600 flex items-center justify-center flex-wrap transition-all duration-300'>
+            <div className='relative min-h-[320px] h-[450px] w-[clamp(350px,90vw,570px)] rounded-xl overflow-y-auto border border-dashed border-gray-600 flex items-center justify-center flex-wrap transition-all duration-300'>
                 {selectedFiles.length == 0 && (
                     <div className='h-full'
                         onClick={() => document.getElementById('fileInput').click()}>
                         <input
                             type="file"
-                            accept="application/pdf"
+                            accept="image/*"
                             multiple
                             className="hidden"
                             id='fileInput'
@@ -88,7 +87,7 @@ const PdfUpload = ({ selectedFiles, setSelectedFiles, status }) => {
                 {selectedFiles.map((file, index) => (
                     <div
                         key={index}
-                        className="relative group w-[120px] mt-3 p-3 rounded-xl shadow flex flex-col items-center transition-transform duration-200 hover:bg-[#222] hover:scale-105"
+                        className="relative group w-[160px] mt-3 p-3 rounded-xl shadow flex flex-col items-center transition-transform duration-200 hover:bg-[#222] hover:scale-105"
                     >
                         {/* Delete button - hidden until hover */}
                         <button
@@ -99,20 +98,32 @@ const PdfUpload = ({ selectedFiles, setSelectedFiles, status }) => {
                         </button>
 
                         <img
-                            src="/icons/pdf.png"
-                            alt="PDF Icon"
+                            src={file.preview}
+                            alt="Img Thumbnail"
                             className="w-25 aspect-square object-contain"
                         />
 
-                        <p className="mt-2 text-center text-[14px] font-medium text-gray-200 line-clamp-2 break-all">
-                            {file.name}
+                        <p className="my-2 text-center text-[14px] font-medium text-gray-200 line-clamp-2 break-all">
+                            {file.name.replace(/\.[^/.]+$/, "")}
                         </p>
 
-                        <p className="mt-1 text-sm text-gray-500">{file.size}</p>
+
+                        <p className="inline-flex items-center justify-center px-3 py-0.5 text-xs font-semibold uppercase
+              border border-amber-900/50 text-amber-700 rounded-full
+              bg-amber-900/10">
+                            {file.name.split(".").pop()}
+                        </p>
+
+                        
+
+                        <p className="mt-1 text-sm text-gray-500">
+                            {file.size}
+                        </p>
+
                     </div>
                 ))}
             </div>
         </div>)
 }
 
-export default PdfUpload
+export default ImgUpload

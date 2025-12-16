@@ -4,10 +4,12 @@ import { deleteFromSupabase } from '@/lib/deleteFromSupabase';
 import axios from "axios";
 import PdfUpload from './pdfFileUpload';
 import { toast } from "react-toastify";
+import uploadToFirebase from '@/lib/uploadToFirebase';
+import { useEffect } from 'react';
 
 
 const PDFSec = () => {
-
+    const [backendStatus, setBackendStatus] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [status, setStatus] = useState("idle");
     const [selectedTool, setSelectedTool] = useState(null);
@@ -20,14 +22,6 @@ const PDFSec = () => {
         setSelectedTool(null);
     };
 
-    const progressMap = {
-        idle: "0%",
-        uploading: "25%",
-        processing: "55%",
-        downloading: "85%",
-        done: "100%",
-    };
-
     const glowMap = {
         idle: "opacity-0",
         uploading: "opacity-60",
@@ -36,6 +30,33 @@ const PDFSec = () => {
         done: "opacity-100",
     };
 
+    useEffect(() => {
+        if (status !== "processing") {
+            setBackendStatus(null);
+            return;
+        }
+
+        const timer = setTimeout(async () => {
+            setBackendStatus("checking");
+
+            const start = performance.now();
+
+            try {
+                await fetch("https://fileway-backend.onrender.com/health");
+                const duration = performance.now() - start;
+
+                if (duration < 800) {
+                    setBackendStatus("warm");
+                } else {
+                    setBackendStatus("cold");
+                }
+            } catch {
+                setBackendStatus("cold");
+            }
+        }, 2000); // 👈 2 seconds threshold
+
+        return () => clearTimeout(timer);
+    }, [status]);
 
 
     async function mergePdfFunction(files) {
@@ -47,6 +68,7 @@ const PDFSec = () => {
             const urls = await uploadToSupabase({ selectedFiles: files })
 
             setStatus("processing");
+
             const response = await axios.post("https://fileway-backend.onrender.com/merge-pdfs", {
                 pdf_urls: urls,
             }, {
@@ -145,7 +167,6 @@ const PDFSec = () => {
                 const urls = await uploadToSupabase({ selectedFiles: files })
 
                 setStatus("processing");
-
                 const response = await axios.post("https://fileway-backend.onrender.com/unlock-pdf", {
                     pdf_urls: urls,
                     password: pdfPassword,
@@ -188,8 +209,7 @@ const PDFSec = () => {
 
             const urls = await uploadToSupabase({ selectedFiles: files })
 
-            setStatus("processing");
-
+            setStatus("processing"); 
             const response = await axios.post("https://fileway-backend.onrender.com/encrypt-pdf", {
                 pdf_urls: urls,
                 password: input,
@@ -724,13 +744,30 @@ const PDFSec = () => {
                             )}
 
                             {/* Status Text */}
-                            <span className="font-medium tracking-wide text-white/90">
+                            {/* <span className="font-medium tracking-wide text-white/90">
                                 {status === "idle" && selectedTool.name}
                                 {status === "uploading" && "Uploading…"}
                                 {status === "processing" && "Processing…"}
                                 {status === "downloading" && "Downloading…"}
                                 {status === "done" && "Done"}
+                            </span> */}
+                            <span className="font-medium tracking-wide text-white/90">
+                                {status === "idle" && selectedTool.name}
+                                {status === "uploading" && "Uploading…"}
+
+                                {status === "processing" && (
+                                    <>
+                                        Processing…
+                                        {backendStatus === "checking" && " (Checking Backend…)"}
+                                        {backendStatus === "warm" && ""}
+                                        {backendStatus === "cold" && " (Backend Waking up...)"}
+                                    </>
+                                )}
+
+                                {status === "downloading" && "Downloading…"}
+                                {status === "done" && "Done"}
                             </span>
+
                         </div>
                     </button>
 

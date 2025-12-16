@@ -7,11 +7,11 @@ export async function deleteFromSupabase({ urls }) {
 
   const paths = urls.map((url) => url.replace(base, ""));
 
-  const { data, error } = await supabase.storage.from(bucket).remove(paths);
+  // const { data, error } = await supabase.storage.from(bucket).remove(paths);
 
-  if (error) {
-    console.error("❌ Error deleting files from Supabase:", error.message);
-  } else {
-    console.log("Files deleted successfully ✅:", data);
-  }
+  // if (error) {
+  //   console.error("❌ Error deleting files from Supabase:", error.message);
+  // } else {
+  //   console.log("Files deleted successfully ✅:", data);
+  // }
 }

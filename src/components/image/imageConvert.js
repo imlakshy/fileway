@@ -60,7 +60,7 @@ const ImageConvert = ({ files, inputFormat }) => {
     };
 
     return (
-        <div className="flex flex-wrap justify-center items-center">
+        <div className="flex flex-wrap justify-center items-center w-[clamp(380px,90vw,500px)]">
             {Imgformats.map((ext) => (
                 <button
                     key={ext}
