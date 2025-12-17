@@ -209,7 +209,7 @@ const PDFSec = () => {
 
             const urls = await uploadToSupabase({ selectedFiles: files })
 
-            setStatus("processing"); 
+            setStatus("processing");
             const response = await axios.post("https://fileway-backend.onrender.com/encrypt-pdf", {
                 pdf_urls: urls,
                 password: input,
@@ -639,7 +639,7 @@ const PDFSec = () => {
                 <div
                     className=" w-screen flex justify-center">
                     <div
-                        className=" w-screen max-w-[100vw] max-h-[calc(100vh-200px)] overflow-y-auto px-2 scrollbar-none">
+                        className="w-screen max-h-[calc(100vh-200px)] overflow-y-auto px-2 scrollbar-none">
                         <div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -731,40 +731,48 @@ const PDFSec = () => {
                         >
                             {/* Loader */}
                             {status !== "idle" && status !== "done" && (
-                                <span className="w-4 h-4 border-2 border-white/80 border-t-transparent rounded-full animate-spin" />
+                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                ></circle>
+                                <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                                ></path>
+                            </svg>
                             )}
 
                             {/* Done Tick */}
                             {status === "done" && (
-                                <span className="text-emerald-400 text-lg animate-[pop_0.5s_ease-out]">
-                                    ✓
-                                </span>
+                                <svg
+                                    className="h-5 w-5 text-white"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
                             )}
 
                             {/* Status Text */}
-                            {/* <span className="font-medium tracking-wide text-white/90">
+                            <span className="font-medium tracking-wide text-white/90">
                                 {status === "idle" && selectedTool.name}
                                 {status === "uploading" && "Uploading…"}
                                 {status === "processing" && "Processing…"}
                                 {status === "downloading" && "Downloading…"}
-                                {status === "done" && "Done"}
-                            </span> */}
-                            <span className="font-medium tracking-wide text-white/90">
-                                {status === "idle" && selectedTool.name}
-                                {status === "uploading" && "Uploading…"}
-
-                                {status === "processing" && (
-                                    <>
-                                        Processing…
-                                        {backendStatus === "checking" && " (Checking Backend…)"}
-                                        {backendStatus === "warm" && ""}
-                                        {backendStatus === "cold" && " (Backend Waking up...)"}
-                                    </>
-                                )}
-
-                                {status === "downloading" && "Downloading…"}
-                                {status === "done" && "Done"}
+                                {status === "done" && "Done!"}
                             </span>
+
 
                         </div>
                     </button>
