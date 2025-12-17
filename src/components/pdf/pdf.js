@@ -381,8 +381,6 @@ const PDFSec = () => {
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
 
-
-
             // CLEANUP: Call delete function after download
             console.log("Cleaning up uploaded files...");
             await deleteFromSupabase({ urls });

@@ -3,10 +3,11 @@ import { useState } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { styleEffect } from 'framer-motion';
+import uploadToSupabase from '@/lib/uploadToSupabase';
 
 const ImageConvert = ({ files, inputFormat }) => {
 
-    const Imgformats = ["JPEG", "PNG", "WEBP", "PDF", "GIF", "BMP", "TIFF" , "ICO", "PPM", "EPS"];
+    const Imgformats = ["JPEG", "PNG", "WEBP", "PDF", "GIF", "BMP", "TIFF", "ICO", "PPM", "EPS"];
 
     const [userInputFormat, setUserInputFormat] = useState("")
 
@@ -59,8 +60,44 @@ const ImageConvert = ({ files, inputFormat }) => {
         }
     };
 
+    async function changeExt() {
+        console.log("Startimg..");
+        setIsDownloading(true);
+
+        const urls = await uploadToSupabase({ selectedFiles: files });
+
+        const response = await axios.post("http://127.0.0.1:8000/changeImgExt", {
+            img_urls: urls,
+            UserDesiredConvertedExtension: userInputFormat,
+        }, {
+            responseType: "blob",
+        });
+
+        console.log("donwlading..");
+
+        // responseType: "blob" (axios) recommended
+        const isZip = urls.length > 1;
+        const ext = userInputFormat.replace(".", "").toLowerCase();
+
+        const blob = new Blob([response.data], {
+            type: isZip
+                ? "application/zip"
+                : `image/${ext === "jpg" ? "jpeg" : ext}`,
+        });
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = isZip ? "converted_images.zip" : `converted.${ext}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+         setIsDownloading(false);
+
+    }
+
     return (
-        <div className="flex flex-wrap justify-center items-center w-[clamp(380px,90vw,500px)]">
+        <div className="flex flex-wrap justify-center items-center w-full">
             {Imgformats.map((ext) => (
                 <button
                     key={ext}
@@ -70,33 +107,9 @@ const ImageConvert = ({ files, inputFormat }) => {
                         }`}
                     onClick={() => setUserInputFormat(ext)
                     }
-                >{ext}</button>
+                >{ext}
+                </button>
             ))}
-
-            {userInputFormat == "PDF" && files.length > 1 && (
-                <div className='transition-all duration-300 flex gap-2 items-center py-4 justify-start w-full text-gray-400 italic'>
-
-                    <div className={`flex items-center justify-center w-[20px] h-[20px] border-2 border-gray-400 ${singlePDF ? "bg-gray-700 border-0" : ""}`}
-
-                        onClick={() => { setSinglePDf(!singlePDF) }} >
-                        {singlePDF ?
-                            <svg width="12px"
-                                height="12px"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                stroke="#ffffff">
-                                <path d="M4 12.6111L8.92308 17.5L20 6.5"
-                                    stroke="#ffffff"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round" />
-                            </svg> : ""
-                        }
-                    </div>
-                    Merge all images into a single PDF?
-                </div>
-            )}
 
             <button
                 className={`cursor-pointer w-full border-2 p-2 mt-1.5 font-semibold transition duration-300 
@@ -104,7 +117,7 @@ const ImageConvert = ({ files, inputFormat }) => {
                         ? "text-gray-500 border-gray-500 cursor-not-allowed"
                         : "hover:bg-white hover:text-black active:bg-white border-white active:text-black"
                     }`}
-                onClick={handleUploadAndDownload}
+                onClick={() => changeExt()}
                 disabled={userInputFormat === "" || isDownloading}
             >
                 {isDownloading ? (

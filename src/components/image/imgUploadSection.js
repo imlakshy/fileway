@@ -49,7 +49,7 @@ const ImgUpload = ({ selectedFiles, setSelectedFiles }) => {
                 </div>
             </div>)}
 
-            <div className='relative min-h-[220px] h-[450px] w-[clamp(350px,90vw,570px)] rounded-xl overflow-y-auto border border-dashed border-gray-600 flex items-center justify-center flex-wrap transition-all duration-300'>
+            <div className='relative h-[200px] md:h-[300px] lg:h-[350px] xl:h-[380px] w-[clamp(350px,90vw,500px)] xl:w-[600px] rounded-xl overflow-y-auto border border-dashed border-gray-600 flex items-center justify-center flex-wrap transition-all duration-300'>
                 {selectedFiles.length == 0 && (
                     <div className='h-full'
                         onClick={() => document.getElementById('fileInput').click()}>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 const ImageResize = () => {
     return (
-        <div className="text-xl p-6 rounded-2xl shadow-md space-y-8 transition-all duration-300 ease-in-out w-[clamp(380px,90vw,500px)]">
+        <div className="text-xl p-6 rounded-2xl shadow-md space-y-8 transition-all duration-300 ease-in-out w-full">
 
             {/* By Dimension */}
             <div className="space-y-4">

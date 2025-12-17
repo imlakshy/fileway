@@ -12,15 +12,17 @@ const ImageSec = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     return (
-        <div className="flex gap-4 lg:h-[calc(100vh-270px)] lg:gap-16 items-center justify-center flex-col lg:flex-row">
+        <div className="flex gap-4 h-[calc(100vh-200px)] lg:gap-16 xl:gap-24 items-center justify-center flex-col lg:flex-row">
 
-            <ImgUpload selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
+            <div className='h-full w-1/2 flex items-center justify-center'>
+                <ImgUpload selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
+            </div>
 
-            <div className="h-[50vh] w-[clamp(350px,90vw,430px)]">
+            <div className="h-full w-[clamp(350px,90vw,430px)] flex items-center justify-center flex-col">
                 <div className="btns flex w-full justify-around h-[50px] text-xl">
-                    <button onClick={() => { setImgActive("resize") }} className={`w-full p-1 transition-all duration-300 ease-in-out ${imgActive == "resize" ? "text-gray-200 border-b-2 border-gray-200 " : "text-gray-500 border-b-2 border-transparent"}`}>Resize</button>
+                    <button onClick={() => { setImgActive("resize") }} className={`cursor-pointer w-full p-1 transition-all duration-300 ease-in-out ${imgActive == "resize" ? "text-gray-200 border-b-2 border-gray-200 " : "text-gray-500 border-b-2 border-transparent"}`}>Resize</button>
 
-                    <button onClick={() => { setImgActive("convert") }} className={`w-full p-1 transition-all duration-300 ease-in-out ${imgActive == "convert" ? "text-gray-200 border-b-2 border-gray-200 " : "text-gray-500 border-b-2 border-transparent"}`}>Convert</button>
+                    <button onClick={() => { setImgActive("convert") }} className={`cursor-pointer w-full p-1 transition-all duration-300 ease-in-out ${imgActive == "convert" ? "text-gray-200 border-b-2 border-gray-200 " : "text-gray-500 border-b-2 border-transparent"}`}>Convert</button>
 
                 </div>
 
