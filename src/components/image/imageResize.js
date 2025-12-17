@@ -37,7 +37,7 @@ const ImageResize = () => {
 
             {/* By Dimension */}
             <div className="space-y-4">
-                <li className="font-semibold">By Dimension</li>
+                <li className="font-semibold text-sm md:text-base">By Dimension</li>
                 <p className="text-base text-gray-400">Enter width and height in px:</p>
 
                 <div className="flex items-end gap-6">
@@ -112,7 +112,7 @@ const ImageResize = () => {
 
             {/* By Size */}
             <div className="space-y-4">
-                <li className="font-semibold">By Size</li>
+                <li className="font-semibold text-sm md:text-base">By Size</li>
                 <p className="text-xs text-gray-400 italic">This will return image in JPG without transparency</p>
                 <p className="text-base text-gray-400">Enter size:</p>
 

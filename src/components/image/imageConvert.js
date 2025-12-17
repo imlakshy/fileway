@@ -21,7 +21,7 @@ const ImageConvert = ({ files }) => {
             const urls = await uploadToSupabase({ selectedFiles: files });
 
             setStatus("processing");
-            const response = await axios.post("http://127.0.0.1:8000/changeImgExt", {
+            const response = await axios.post("https://fileway-backend.onrender.com/changeImgExt", {
                 img_urls: urls,
                 UserDesiredConvertedExtension: userInputFormat,
             }, {
@@ -66,7 +66,7 @@ const ImageConvert = ({ files }) => {
             {Imgformats.map((ext) => (
                 <button
                     key={ext}
-                    className={`cursor-pointer w-[45%] p-2 my-4 mx-1 border-2 border-transparent transition-all duration-300 ${userInputFormat == ext
+                    className={`text-sm md:text-base cursor-pointer w-[45%] p-2 my-4 mx-1 border-2 border-transparent transition-all duration-300 ${userInputFormat == ext
                         ? "bg-white text-black border-white"
                         : "hover:border-white"
                         }`}
@@ -77,7 +77,7 @@ const ImageConvert = ({ files }) => {
             ))}
 
             <button
-                className={`w-full border-2 p-2 mt-1.5 font-semibold transition duration-300 
+                className={`text-sm md:text-base w-full border-2 p-2 mt-1.5 font-semibold transition duration-300 
     ${userInputFormat === ""
                         ? "text-gray-500 border-gray-500 cursor-not-allowed"
                         : "hover:bg-white hover:text-black active:bg-white border-white active:text-black cursor-pointer"
