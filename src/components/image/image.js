@@ -12,7 +12,7 @@ const ImageSec = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     return (
-        <div className="flex gap-4 h-[calc(100vh-200px)] overflow-y-auto px-2 scrollbar-none lg:gap-16 xl:gap-24 items-center justify-center flex-col lg:flex-row">
+        <div className="flex gap-4 h-[calc(100vh-200px)] overflow-y-auto px-2 scrollbar-none lg:gap-16 xl:gap-24 items-center lg:justify-center flex-col lg:flex-row">
 
             <div className='h-full w-1/2 flex items-center justify-center'>
                 <ImgUpload selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
