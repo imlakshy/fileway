@@ -2,7 +2,6 @@ import React from 'react'
 import { useState } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
-import { styleEffect } from 'framer-motion';
 import uploadToSupabase from '@/lib/uploadToSupabase';
 
 const ImageConvert = ({ files }) => {
@@ -57,8 +56,6 @@ const ImageConvert = ({ files }) => {
             setStatus("idle");
         }
     }
-        
-
     }
 
     return (
@@ -77,7 +74,7 @@ const ImageConvert = ({ files }) => {
             ))}
 
             <button
-                className={`text-sm md:text-base w-full border-2 p-2 mt-1.5 font-semibold transition duration-300 
+                className={`w-full border-2 p-2 mt-1.5 mb-8 md:mb-0 font-semibold transition duration-300 
     ${userInputFormat === ""
                         ? "text-gray-500 border-gray-500 cursor-not-allowed"
                         : "hover:bg-white hover:text-black active:bg-white border-white active:text-black cursor-pointer"

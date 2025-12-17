@@ -27,7 +27,7 @@ const ImageSec = () => {
                 </div>
 
                 {imgActive == "resize" && (
-                    <ImageResize />
+                    <ImageResize files={selectedFiles} />
                 )}
 
                 {imgActive == "convert" && (

@@ -1,34 +1,118 @@
 import React from 'react'
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import uploadToSupabase from '@/lib/uploadToSupabase';
+import axios from 'axios';
 
-const ImageResize = () => {
 
-
-    const [status, setStatus] = useState("idle");
+const ImageResize = ({ files }) => {
+    const [Rstatus, setRStatus] = useState("idle");
+    const [Dstatus, setDStatus] = useState("idle");
     const [size, setSize] = useState("");
     const [width, setWidth] = useState("");
     const [height, setHeight] = useState("");
 
 
     async function resizeBySize() {
-        setStatus("resizing");
+        if (files.length === 0) {
+            toast.error("Please upload a file first!");
+        } else {
+            try {
+                setRStatus("resizing");
 
-        // Simulate resizing process
-        setTimeout(() => {
-            setStatus("idle");
-            setSize("");
-        }, 2000);
+                const urls = await uploadToSupabase({ selectedFiles: files });
+
+                const response = await axios.post("https://fileway-backend.onrender.com/resizeImgByKB", {
+                    img_urls: urls,
+                    sizeInKB: size,
+                }, {
+                    responseType: "blob",
+                });
+
+                const isZip = urls.length > 1;
+                const blob = new Blob([response.data], {
+                    type: isZip
+                        ? "application/zip"
+                        : `image/jpg`,
+                });
+
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = isZip ? "Images.zip" : `Image.jpg`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                setRStatus("idle");
+
+                setTimeout(() => {
+                    setSize("");
+                }, 2000);
+            } catch (error) {
+                toast.error("An error occurred during conversion. Please try again.");
+                setRStatus("idle");
+            }
+        }
     }
 
     async function resizeByDimension() {
-        setStatus("resizing");
+        if (files.length === 0) {
+            toast.error("Please upload a file first!");
+        } else {
+            try {
+                setDStatus("resizing");
 
-        // Simulate resizing process
-        setTimeout(() => {
-            setStatus("idle");
-            setWidth("");
-            setHeight("");
-        }, 2000);
+                const urls = await uploadToSupabase({ selectedFiles: files });
+
+                const response = await axios.post("https://fileway-backend.onrender.com/resizeImgByHW", {
+                    img_urls: urls,
+                    width: width,
+                    height: height,
+                }, {
+                    responseType: "blob",
+                });
+                const isZip = urls.length > 1;
+
+                // if single image, backend keeps original format, so read it from response header
+                const contentType = response.headers?.["content-type"] || response.headers?.get?.("content-type");
+
+                const blob = new Blob([response.data], {
+                    type: isZip ? "application/zip" : (contentType || "application/octet-stream"),
+                });
+
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+
+                // pick extension from content-type (only for single file)
+                let ext = "img";
+                if (!isZip && contentType) {
+                    if (contentType.includes("jpeg")) ext = "jpg";
+                    else if (contentType.includes("png")) ext = "png";
+                    else if (contentType.includes("webp")) ext = "webp";
+                    else if (contentType.includes("gif")) ext = "gif";
+                    else if (contentType.includes("bmp")) ext = "bmp";
+                    else if (contentType.includes("tiff")) ext = "tiff";
+                    else if (contentType.includes("x-icon")) ext = "ico";
+                    else if (contentType.includes("postscript")) ext = "eps";
+                    else if (contentType.includes("pdf")) ext = "pdf";
+                }
+
+                link.download = isZip ? "Images.zip" : `Image.${ext}`;
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+
+                setDStatus("idle");
+
+                setTimeout(() => {
+                    setSize("");
+                }, 2000);
+            } catch (error) {
+                toast.error("An error occurred during conversion. Please try again.");
+                setDStatus("idle");
+            }
+        }
     }
 
 
@@ -55,15 +139,15 @@ const ImageResize = () => {
                             <label htmlFor="height" className="mb-1 text-sm font-medium text-gray-400">
                                 Height
                             </label>
-                            <input type="number" id="height" className="text-base border-2 rounded-lg px-3 py-1 w-[120px]" placeholder="e.g. 600" onChange={(e) => setHeight(Number(e.target.value))} value={height} 
-                            onKeyDown={(e) => { if (e.key === "Enter" && height !== "" && width !== "") { resizeByDimension() } }}/>
+                            <input type="number" id="height" className="text-base border-2 rounded-lg px-3 py-1 w-[120px]" placeholder="e.g. 600" onChange={(e) => setHeight(Number(e.target.value))} value={height}
+                                onKeyDown={(e) => { if (e.key === "Enter" && height !== "" && width !== "") { resizeByDimension() } }} />
                         </div>
 
                         {/* Tick Button */}
                         <button
                             onClick={resizeByDimension}
                             className={` h-[34px] mt-[22px] flex items-center justify-center cursor-pointer transition ${(width > 0 && height > 0) ? "" : "hidden"}`}>
-                            {status === "resizing" ? (
+                            {Dstatus === "resizing" ? (
                                 <svg
                                     className="animate-spin h-5 w-5 text-white"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +208,7 @@ const ImageResize = () => {
 
                         <button className={`ml-4 cursor-pointer ${size > 0 ? "" : "hidden"}`}
                             onClick={() => { resizeBySize() }}>
-                            {status === "resizing" ? (<svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            {Rstatus === "resizing" ? (<svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle
                                     className="opacity-25"
                                     cx="12"
