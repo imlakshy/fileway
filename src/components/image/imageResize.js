@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const ImageResize = ({ files }) => {
     const [Rstatus, setRStatus] = useState("idle");
-    const [Dstatus, setDStatus] = useState("idle");
+    const [Dstatus, setDStatus] = useState("resizing");
     const [size, setSize] = useState("");
     const [width, setWidth] = useState("");
     const [height, setHeight] = useState("");
@@ -120,7 +120,7 @@ const ImageResize = ({ files }) => {
         <div className="text-xl p-6 rounded-2xl shadow-md space-y-8 transition-all duration-300 ease-in-out w-full">
 
             {/* By Dimension */}
-            <div className="space-y-4">
+            <div className={`space-y-4 disabled={Rstatus === "resizing"} ${Rstatus==="resizing" ? "opacity-20 disabled" : "opacity-100"} `}>
                 <li className="font-semibold">By Dimension</li>
                 <p className="text-base text-gray-400">Enter width and height in px:</p>
 
@@ -188,14 +188,14 @@ const ImageResize = ({ files }) => {
 
             </div>
 
-            <div className="flex items-center w-full my-6">
+            <div className={`flex items-center w-full my-6 ${Rstatus==="resizing" || Dstatus==="resizing" ? "opacity-20" : "opacity-100"} `}>
                 <div className="flex-grow border-t border-gray-500"></div>
                 <span className="px-4 text-gray-400 text-sm">or</span>
                 <div className="flex-grow border-t border-gray-500"></div>
             </div>
 
             {/* By Size */}
-            <div className="space-y-4">
+            <div className={`space-y-4 ${Dstatus==="resizing" ? "opacity-20" : "opacity-100"}`}>
                 <li className="font-semibold">By Size</li>
                 <p className="text-xs text-gray-400 italic">This will return image in JPG without transparency</p>
                 <p className="text-base text-gray-400">Enter size:</p>

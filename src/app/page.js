@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 // Lazy load each section
 const PDFSec = dynamic(() => import('@/components/pdf/pdf'));
 const ImageSec = dynamic(() => import('@/components/image/image'));
+const AudioSec = dynamic(() => import('@/components/audio/audio'));
 
 export default function Home() {
 
@@ -90,6 +91,7 @@ export default function Home() {
         <div className="mt-2">
           {showComponent === 'PDF' && <PDFSec />}
           {showComponent === 'Image' && <ImageSec />}
+          {showComponent === 'Audio' && <AudioSec />}
         </div>
       </div>
 
